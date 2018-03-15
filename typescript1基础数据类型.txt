@@ -1,0 +1,44 @@
+一、为了让程序更易用，我们兼容几种最基本的数据类型：numbers(数字)，strings(字符串)，structures(结构)，boolean(布尔值)等等。
+在 TypeScript 中，我们支持和 Javascript 几乎一样多的类型，并且新增了实用的枚举类型。
+1.boolean布尔值
+var a : boolean = true;
+
+2.Number数字 所有的number都是浮点型，除了支持js的十六进制和十进制，还支持二进制
+var b : number = 10;
+
+3.string 字符串
+var str : string = "vicky"
+模板字符串，支持多行文本和内嵌表达式，由单引号包围，嵌入的表达式由${} 的形式嵌入。
+var sentence : string = `my name is ${str}`
+
+4.Array数组 数组类型的定义有两种写法，第一种写法，在数组元素类型后加‘[ ]’表示这是一个该类型的数组。
+var arr : number[ ] = [1,2,3];
+第二种写法使用一种通用的数组类型表示,Array<数组元素类型>
+var arr2 : Array<string> = ['a','b','c'];
+
+5.Tuple元组，元组类型允许表达固定数量的已知类型的集合，但这些类型不必是相同的
+var tuple : [string,number] //声明一个元组类型
+tuple = ['abc',123] //正确的初始化
+tuple = [123,'abc'] //错误的初始化
+我们可以用数字检索一个已知的元素，前提是注意类型正确
+console.log(tuple[0].substr(1)) //正确，b
+console.log(tuple[1].substr(1)) //错误，number类型没有substr方法
+
+当访问的索引超过边界时，可使用联合类型处理
+tuple[3] = 'world'//正确，string允许被分配到(string|number);
+console.log(x[5].toString) //正确，string和number都有toString方法。
+
+6.Enum 枚举
+tsc 拓展了 js的原生的标准数据类型集，增加了枚举类型，它提供了一种数字类型的值，设置易于辨别的名字的方法。
+enum Color {Red,Green,Blue};
+var c : Color  = Color.Green;
+7.Any
+当我们编写应用时，我们可能会需要描述一些类型不明确的变量。
+因为这些变量的值可能来源于一些动态的内容，如用户或第三方提供的库。
+在这种情况下，我们需要略过对这些变量进行的类型检查，让它们直接通过编译时的检查。为了实现这一目的，我们可以把它们标识为'any'类型：
+
+8.void
+void 是any的反面，代表undefined和null
+
+
+ 

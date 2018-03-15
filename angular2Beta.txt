@@ -1,0 +1,65 @@
+一、selector -声明选择符
+css选择符，
+<any class="ez-two">...</any>
+@Component({selector:".ez-two",template:"CSSCLASS-SELECTOR"})
+class EzTwo{}
+属性选择符，
+<any ez-three>...</any>
+@Component({selector:"[ez-three]",template:"ATTR-SELECTOR"})
+class EzThree{}
+属性值选择符
+<any ez-three=123>...</any>
+@Component({selector:"[ez-three=123]",template:"ATTR-SELECTOR"})
+class EzThree{}
+二、template/templateUrl模板
+三、styles/stylesUrls模板
+@Component({
+    styles:[`
+        h1{background:#4dba6c;color:#fff}     
+    `]
+})
+@Component({
+    styleUrls:["ez-greeting.css"]
+})
+四、properties声明属性
+属性是组件暴露给外部世界的调用接口，调用者通过设置不同的属性值来定制组件的行为和外观
+在Component注解的properties属性中声明组件的成员变量就可以了
+@Component({
+	properties:["name","country"]
+})
+五、events声明事件
+与属性相反，事件从组件的内部流出，用来通知外部世界发生了一些事情
+增加事件接口，首先定义一个事件源/EventEmitter,然后通过Component注解的events接口暴露出来
+@Component({
+	events:["change"]
+})
+六、directives-引用指令
+在Angular2中，一个组件的模板内除了可以使用标准的html元素，还可以使用自定义的组件
+@Component({
+	directives:[Ezcard]
+})
+//NgStyle  NgClass
+[NgStyle] = "styles" styles属性的值是一个JSON对象，驼峰命名样式属性
+[NgClass] = "cns" cns属性的值也是一个JSON对象，值为TRUE或false
+七、NgSwitch 分支逻辑
+NgSwitch包含一组指令，用来构造多分支的模板
+NgSwitchWhen指令必须应用在Ngswitch指令的子template元素上 
+[NgSwitch] = "gender" ngSwitchWhen = "";ngSwitchDefault
+NgFor循环逻辑 
+<li *ngFor = "#item of items;#i=index">{{item}}</li>
+八、管道
+number对应着DecimalPipe对象，:'2.2-2'表示调用这个这个管道 时传入的参数为'2.2-2'，
+对于DecimalPipe，这三个2分别表示最少整数位、最少 小数位和最多小数位。
+<p>{{ "01234567890" | slice:'0:9'}}</p>
+<p>{{ "what a wonderful day!" | uppercase }}</p>
+<p>{{ "STAY HUNGRY, STAY FOOLISH" | lowercase }}</p>
+<p>{{ pi | number:'3.1-10' }}</p>
+<p>{{ pi | percent:'3.1-10'}}</p>
+<p>{{ day | date:'yMMdd'}}</p>
+<p>{{day}}</p>
+<p>{{ 0.32592781 | percent:'2.2-2'}}</p>
+九、管道级联
+管道一个很好的特性，是可以进行级联，前一个管道的输出，是后一个管道的输入：
+
+<!--结果：'WHAT'-->
+{{ "what a wonderful day!" | slice:0:4 | uppercase }}

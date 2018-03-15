@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pptest</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <button>我是一个验证码button</button>
+</body>
+</html>
+<script>
+    //1.生成固定长度的随机字符串
+    function randomString($length) {
+        var _html= "";
+        var $chars = 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
+        var len = $chars.length;
+
+        for(var i=0;i<$length;i++){
+            _html+= $chars.charAt(Math.floor(len*Math.random()));
+        }
+        return _html;
+    }
+    console.log(randomString(5));
+    //2.微信分享 config 时间戳 随机字符串 签名 微信， wx.checkJsApi wx.ready wx.onmenushareAPPmessage
+    //3.验证码倒计时
+    $("button").click(function () {
+       changeCode(this);
+    });
+    function changeCode(item){
+        $(item).attr('disabled',true);
+        var num = 5;
+        var interval = setInterval(function(){
+            $(item).text(num+"S");
+            num--;
+            if(num==0){
+                $(item).removeAttr('disabled');
+                $(item).text("验证码");
+                clearInterval(interval);
+            }
+        },1000)
+    }
+    //4.截取url带参数
+   var set_param = function(param,value){
+        var query = location.search.substring(1);
+        var p = new RegExp("(^|&"+param+")=[^&]*");
+        if(p.test(query)){
+            query = query.replace(p,"$1="+value);
+        }else{
+            if(query != ''){
+                location.hash = "#"+value+"?"+query;
+            }
+        }
+    };
+    //5.禁止浏览器回退
+    var isHistoryBack = function() {
+        if (window.history && window.history.pushState) {
+            $(window).on('popstate', function () {
+                window.location.href = location.href;
+            });
+        }
+        window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+        window.history.forward();
+    };
+    //6.数组去重
+    function repeat(arr){
+        var newArr = [];
+        for( i in arr){
+            if(newArr.indexOf(arr[i])<0){
+                newArr.push(arr[i]);
+            }
+        }
+        return newArr;
+    }
+    //7.数组冒泡排序（1）
+    function bubbleSort(arr) {
+        var len = arr.length;//比较相邻的元素。如果第一个比第二个大，就交换他们两个。
+        for(var i=0;i<len;i++){//对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。
+            for(var j=0;j<len-1-i;j++){//针对所有的元素重复以上的步骤，除了最后一个。
+                if(arr[j]>arr[j+1]){//持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。
+                    var temp = arr[j+1];
+                    arr[j+1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+    //8.数组选择排序(2)
+    function selectSort(arr) {
+        var len =arr.length;
+        var minIndex,temp;
+        for(var i=0;i<len-1;i++){
+            minIndex = i;
+            for(var j=i+1;j<len;j++){
+                if(arr[j]<arr[minIndex]){ //1.首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
+                    minIndex = j;         //2.再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+                }                        //3.重复第二步，直到所有元素均排序完毕。
+            }
+            temp = arr[i];
+            arr[i] =arr[minIndex];
+            arr[minIndex] = temp;
+        }
+        return arr;
+    }
+    //插入排序(3)
+//    将第一待排序序列第一个元素看做一个有序序列，把第二个元素到最后一个元素当成是未排序序列。
+//    从头到尾依次扫描未排序序列，将扫描到的每个元素插入有序序列的适当位置。
+//    （如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。）
+    function insertSort(arr){
+        var len = arr.length;
+        var preIndex,current;
+        for(var i=1;i<len;i++){
+            preIndex = i-1;
+            current = arr[i];
+            while(preIndex>=0&&arr[preIndex]>current){
+                arr[preIndex+1] = arr[preIndex];
+                preIndex--;
+            }
+            arr[preIndex+1] = current;
+
+        }
+        return arr;
+    }
+    var arr = [6,4,3,2,7,5,8,9];
+
+</script>

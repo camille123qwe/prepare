@@ -1,0 +1,199 @@
+@Component({selector:""})
+@View({template:"<h1></h1>"})
+注意这两个后面不能放符号
+引用html文件
+@View({templateUrl:文件路径名称})；
+注解 annotations
+class Ezapp{};
+Ezapp.annotations =[
+	new Component({selector:""}),
+	new View({template:""})
+]
+//使用组件
+directives
+@View({
+	directives:[Model],
+	template:""
+})
+class Model{};
+//ng-if条件逻辑
+//template绑定 *ng-if="trial===true"，
+@Component 引入properties["trial"]  
+@View引入directives:[NgIf]
+//ng-switch分支逻辑
+@Compontent引入properties["gender"]
+@View引入directives[NgSwitch]
+ng-switch指令必须作用在template上
+//ng-for循环逻辑
+*ng-for="#item of items;#i=index"
+//设置模板样式
+@view({
+	styles:[``],
+})
+定义单独的样式文件并引入
+@View({
+	 styleUrls:["ez-greeting.css"]
+})
+//ShadowDom - 封装私有样式
+全局仿真策略EmulatedUnscopedShadowDomStrategy 不需要浏览器原生支持ShadowDom
+作用域仿真策略EmulatedScopedShadowDomStrategy 不需要浏览器原生支持ShadowDom
+原生策略 NativeShadowDomStrategy 如果浏览器原生支持ShadowDom,那么应该使用这个策略
+在Angular2中，ShadowDom的三种策略对应于三个类，这三个类继承自ShadowDomStrategy
+    	import {bind,Component,View,bootstrap} from "angular2/angular2";
+        import {ShadowDomStrategy} from 'angular2/src/render/dom/shadow_dom/shadow_dom_strategy';
+        import {DOCUMENT_TOKEN} from 'angular2/src/render/dom/dom_renderer';
+        import {EmulatedUnscopedShadowDomStrategy} from 'angular2/src/render/dom/shadow_dom/emulated_unscoped_shadow_dom_strategy';
+        import {EmulatedScopedShadowDomStrategy} from 'angular2/src/render/dom/shadow_dom/emulated_scoped_shadow_dom_strategy';
+        import {NativeShadowDomStrategy} from 'angular2/src/render/dom/shadow_dom/native_shadow_dom_strategy';
+      @Component({selector:"ez-app"})
+        @View({
+		template:"<h1>我是H1，我在组件内</h1>",
+		styles:["h1{color:red}"]
+		})
+        class EzApp{}
+                
+		var injectables = [
+			bind(ShadowDomStrategy)
+				.toFactory((doc) => new EmulatedScopedShadowDomStrategy(doc.head), [DOCUMENT_TOKEN])
+		];		
+        bootstrap(EzApp,injectables);
+//属性声明-暴露成员变量
+属性是组件暴露给外部世界的调用接口，调用者通过设置不同的属性值来定制组件的行为和外观
+在angular2中为组件增加属性接口非常简单，只需要在Component注解的properties属性中声明组件的成员变量就可以了
+@Component({properties:["name","age"]})
+ import {Component,View,bootstrap} from "angular2/angular2";
+        
+        //根组件 - EzApp
+        @Component({selector:"ez-app"})
+        @View({
+      		directives:[EzCard],
+        	template:`
+            	<div class="ez-app">
+            		<h1>EzApp</h1>
+                    <ez-card [name]="cindy" [country]="China"></ez-card>
+                </div>`
+        })
+        class EzApp{
+        	constructor(){
+            	this.cindy = "davis";
+                this.China = "China";
+            }
+        }       
+        
+        //具有属性接口的组件 - EzCard
+        @Component({
+        	selector:"ez-card",
+            properties:["name","country"]
+        })
+        @View({
+        	template : `<div class='ez-card'>
+            		My name is <b>{{name}}</b>, 
+                    I am from <b>{{country}}</b>.</div>`
+        })
+        class EzCard{
+        	constructor(){
+            	this.name = "Mike";
+                this.country = "Sweden";
+            }
+        }
+                
+        //渲染组件
+        bootstrap(EzApp);
+    </script>
+//事件声明 -暴露事件源
+与属性相反，事件从组件的内部流出，用来通知外部世界发生了一些事情：
+在Angular2中为组件增加事件接口也非常简单，定义一个事件源/EventEmitter,然后通过Component的events接口包括出来
+@Component({
+	events:["change"]
+})
+//NgForm表单指令
+	import {Component,View,bootstrap,NgIf} from "angular2/angular2";
+        //引入form指令集
+        import {formDirectives} from "angular2/forms";
+        
+        //EzApp组件
+        @Component({selector:"ez-app"})
+        @View({
+            directives:[formDirectives,NgIf],
+            template:`
+            	<form #f="form" (submit)="search(f.value)">
+                	<select>
+                    	<option value="web">网页</option>
+                    	<option value="news">新闻</option>
+                    	<option value="image">图片</option>
+                    </select>
+                    <input type="text" ng-control="kw">
+                    <button type="aubmit">搜索</button>
+                  </form>
+                  <h1 *ng-if="kw!=''">正在搜索 {{kw}}...</h1>
+                                     
+            `,
+            styles:[`form{background:#90a4ae;padding:5px}`]           
+        })
+        class EzApp{
+        	constructor(){
+            	this.kw = "";
+            }
+        	search(val){
+                this.kw = val.kw;
+                setTimeout(()=>this.kw="",1000);
+             
+            }
+        }             
+        bootstrap(EzApp);
+//组件开发 表单输入
+通过使用#符号，创建引用控件组对象（注意，不是form元素）的局部变量，这个变量的最大作用是：它的value属性
+是一个简单的JSON对象，键对应于input元素的ng-control属性，值对应于input元素的值
+NgForm指令为表单元素建立一个控件组对象，作为控件的容器，而NgControlName指令则为宿主input元素建立一个控件对象
+，并将该控件加入到NgForm指令指令建立的控件组中
+//NgcontrolName 命名控件指令
+除了使用控件组获得输入值，NgControlName指令可以通过ngModel实现模型与表单的双向绑定
+<input type="text" ng-control="user" [(ng-model)]="data.user">
+//NgControlGroup 命名控件组
+<ul ng-control-group="groupname">
+	<li><input type="text" ng-control="name"></li>
+</ul>
+和NgControlName指令一样，NgControlGroup指令也必须作为NgForm或者NgFormModel的后代使用，因为这个指令需要将
+创建的控件组对象添加到祖先所创建的控件组中，并将这个对象以指定的名称与DOM对象绑定
+//NgFormModel指令类似于Ngcontrolgrouop指令，都是为控件提供容器，但区别在于，NgFomModel
+指令将已有的控件组绑定到DOM对象上
+
+   <script type="module">
+    	import {Inject,Component,View,bootstrap} from "angular2/angular2";
+        import {Control,ControlGroup,formDirectives} from "angular2/forms";
+        
+        @Component({selector:"ez-app"})
+        @View({
+        	directives:[formDirectives],
+        	template:`
+            	<div [ng-form-model]="controls">
+                	<ul>
+                    	<li>姓名：<input type="text" ng-control="name"></li>
+                    	<li>地址：<input type="text" ng-control="address"></li>
+                    	<li>电话：<input type="text" ng-control="telephone"></li>
+                    </ul>
+                </div>
+                <pre>{{dump()}}</pre>
+            `,
+            styles:[`
+            	div{background:#e1f5fe;}
+            	ul{list-style:none;padding:10px;margin:0px;}
+                li{line-height:30px;}
+            `]
+        })
+        class EzApp{
+        	constructor(){
+            	this.controls = new ControlGroup({
+                	name : new Control("Jason"),
+                    address : new Control("London U.K."),
+                    telephone : new Control("114")
+                });
+            }
+            dump(){
+            	return JSON.stringify(this.controls.value,null,"\t");
+            }
+        }
+
+        
+        bootstrap(EzApp);
+    </script>

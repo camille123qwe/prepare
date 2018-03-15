@@ -1,0 +1,4 @@
+ES6环境支持
+首先，在网页头部加载Traceur文件
+traceur.js 和 bootstrap.js
+设置script的type属性的值为module或traceur

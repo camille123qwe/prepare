@@ -1,0 +1,104 @@
+1.跳转到页面顶部的方法
+<a href="javascript:scrollTo(0,0);">返回顶部</a>
+$(window).scrollTop(0);
+
+$('body').scrollTop(0);
+
+$('html').scrollTop(0);
+// 在500毫秒内平滑滚动到页面顶部
+
+$('body').animate( {scrollTop: 0}, 500);
+2.IE8以下不兼容backgroundsize属性，加以下代码
+filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='url路径',sizingMethod='scale');
+3.图片填充的div有空隙，给图片标签添加align="absmiddle"
+4.tap点击时出现蓝色背景
+设置全局样式-webkit-tap-highlight-color: rgba(0,0,0,0); 
+5.JS代码动态设置html的大小
+ //JS监听浏览器文字大小代码
+//    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    docEl.style.fontSize = 20 * (clientWidth / 375) + 'px';
+                };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+
+
+6.禁止页面滑动
+ $("body").on('touchmove',function(event) { event.preventDefault(); }, false);//取消禁止滑动 $("body").unbind('touchmove');
+7.获取页面滚动条的位置 
+document.body.scrollTop/document.scrollingElement.scrollTop
+8.改变表格每列的宽度 
+table-layout:fixed
+9.js判断object的值是否为空
+  function isEmptyObject(e){
+        var t;
+        for (t in e){
+        	return !1;}
+        return !0
+     }
+10.设置页面的高度100%,禁止滚动,防止蒙层遮盖不完整
+$("body").prop("style","overflow:hidden");
+$("body").css("height","100%")
+//上传图片
+   /*function setImagePreview(avalue) {
+        var docObj=document.getElementById("fileupload-goods-btn");
+        $("#imgname").val(arr[arr.length-1]);
+        var imgObjPreview=document.getElementById("contractimg");
+        if(docObj.files &&docObj.files[0]){
+            //火狐下，直接设img属性
+            imgObjPreview.style.display = 'block';
+            imgObjPreview.style.width = '150px';
+            imgObjPreview.style.height = '200px';
+            //imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+            //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+        }else{
+            //IE下，使用滤镜
+            docObj.select();
+            var imgSrc = document.selection.createRange().text;
+            var localImagId = document.getElementById("localImag");
+            //必须设置初始大小
+            localImagId.style.width = "150px";
+            localImagId.style.height = "200px";
+            //图片异常的捕捉，防止用户修改后缀来伪造图片
+            try{
+                localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+            }
+            catch(e)
+            {
+                alert("您上传的图片格式不正确，请重新选择!");
+                return false;
+            }
+                imgObjPreview.style.display = 'none';
+                document.selection.empty();
+        }
+        return true;
+    }*/
+
+变量单双引拼接
+【先把整个串用双引号括起来，不管变量，然后再用双引号把变量括起来，然后在变量两头加双引号，然后就是补单引号了。。。】
+   //---------计算短信字节数-------------
+                /*var str=json.content;
+                 var bytesCount=str.length;
+               for (var j = 0; j < str.length; j++){
+                    var c = str.charAt(j);
+                    if (/^[\u0000-\u00ff]$/.test(c)) //匹配双字节
+                    {
+                        bytesCount += 1;
+                    }else{
+                        bytesCount += 2;
+                    }
+                }*/
+				
+	截取到指定字符的字符串
+ str.substring(0,str.indexOf(";"));

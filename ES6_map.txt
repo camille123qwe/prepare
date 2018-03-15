@@ -1,0 +1,37 @@
+ES6_map
+
+1.Map结构的目的和基本用法
+Map是一个“超对象”，其key除了可以是string类型之外，还可以为其他类型（如：对象）
+示例：
+var  m = new Map();
+o = {p:"hello world"};
+m.set(o,"content");
+document.write(m.get(o)); //content
+他的方法和set差不多
+size: 返回成员总数
+set(key,value): 设置一个键值对
+get(key):读取一个键
+has(key)返回一个布尔值，表示某个键是否在map数据结构中
+delete(key) 删除某个键
+clear() 删除所有成员
+keys() 返回所有键名的遍历器
+values() 返回所有键值的遍历器
+entries() 返回所有成员的遍历器
+
+2.map实例的属性和操作方法。
+size：返回成员总数。
+set(key,value):设置key所对应的键值，然后返回整个Map结构，如果key已经有值，则键值会被更新，否则新生产该键
+get(key ) ：读取key 对应的键值，如果找不到key，返回undefined。
+has(key):返回一个布尔值，表示某个键是否在map数据结构中
+delete(key):删除某个键，返回true,如果删除失败，返回false
+clear() :清除所有成员，没有返回值
+
+3.遍历方法
+Map原生提供三个遍历器
+keys() :返回键名的遍历器 values()返回键值的遍历器 entries() 返回所有成员的遍历器 
+Map结构为数组结构，比较快速的方法是结合扩展运算符
+
+4.WeakMap
+WeakMap的结构与Map结构基本类似，唯一的区别是他只接受对象作为键名（null除外），不接受原始类型的值作为键名
+而且键名所指向的对象，不计入垃圾回收机制。set() 和get()分别用来添加数据和获取数据
+WeakMap 只有四个方法可用 ：get(); set();has();delete() .

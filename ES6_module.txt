@@ -1,0 +1,84 @@
+ES6_module
+1.export命令,import命令
+模块功能主要由两个命令组成：export和import
+export命令用于用户自定义模块，规定对外接口；
+import命令用于输入其他模块提供的功能，同时创造命名空间（namespace）防止函数名冲突
+ES6允许将独立的JS文件作为模块，允许一个js脚本文件调用另一个脚本文件
+现有profile.js文件，保存了用户信息。ES6将其视为一个模块，里面用export命令对外部输出了三个变量
+示例：
+//profile.js
+var firstName = "Michael";
+var lastName = "Jackson";
+var  year = 1958;
+export {firstName,lastName,year}
+使用export命令定义了模块的对外接口后，其他的JS文件就可以通过import命令加载这个模块
+//main.js
+import {firstName,lastName,year} from './profile';
+function test(element){
+	element.textContent = firstName+" "+lastName;
+}
+import命令接受一个对象(用大括号表示)，里面指定要从其他模块导入的变量名。大括号里面的变量名，必须与被导入模块对外接口的名称相同
+如果想为输入的变量重新取一个名字，import语句中要使用as关键字，将输入的变量重命名
+import{lastName as newName} from './profile';
+ES6支持多重加载，即所加载的模块中又加载其他模块
+
+2.模块的整体输入
+export命令除了输出方法或类(class)。下面是一个circle.js文件，它输出两个方法area和circumference.
+//circle.js
+export function area(radius){
+	return Math.PI*radius*radius;
+}
+export function circumference(radius){
+	retrun 2*Math.PI*radius;
+}
+//main.js
+import{area,circumference} from 'circle';
+document.write("圆面积："+area(4));
+document.write("圆周长"+circumference(4));
+上面的写法是逐一指定要输入的方法，另一种写法是整体输入。
+import * as circle from 'circle';
+document.write("圆面积："+circle.area(4));
+document.write("圆周长："+ circle.circumference(4));
+
+3.module命令
+module命令可以取代import语句，达到整体输入模块的作用。
+//main.js
+module circle from 'circle';
+document.write("圆面积："+circle.area(4));
+document.write("圆周长："+ circle.circumference(4));
+
+4.export default命令
+为加载模块指定默认输出，使用export default命令。
+//export-default.js
+export default function(){
+	document.write('foo');
+}
+上面的代码是一个模块文件export-default.js,它的默认输出是一个函数
+其他模块加载该模块时，import命令可以为该匿名函数指定任意名字
+//import-default.js
+import custom from './export-default';
+custom();//foo
+上面代码的import命令，可以使用任意名称指向export-default.js输出的方法。
+这里import命令的后面，不使用大括号
+
+5.模块的继承
+模块之间也可以继承
+假设有一个circleplus模块，继承了circle模块
+//circleplus.js
+export * from 'circle';
+export var e = 3.14;
+export default function(x){
+	return Math.exp(x);
+}
+上面的代码中的‘export*’,表示输出circle模块中的所有属性和方法
+export default 命令定义模块的默认方法
+这时，也可以将circle的属性和方法，改名后再输出
+//circleplus.js
+export{area as circleArea} from 'circle';
+上面的代码表示，只输出circle模块的area方法,且将其改名为circleArea.
+加载上面模块的写法如下
+//main.js
+module math from "circleplus";
+import exp form "circleplus";
+document.wrtie(exp(math.pi));
+上面代码中的“import exp”表示，将circleplus模块的默认方法加载为exp方法

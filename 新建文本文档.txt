@@ -1,0 +1,40 @@
+垂直水平居中实现 
+1.设置外层display：table, 第二层：display:table-cell,vertical-align:middle;居中层：margin:auto, overflow；auto
+
+2,利用flex实现  外层：display:flex,box-align:center 兼容性不好，align-items :center,box-pack:center;jusify-content:center
+
+3.绝对定位+反向偏移 
+rem与em的区别
+em的值并不是固定的， em会继承父级元素的字体大小。通常声明body的font-size = 62.5%;将原来的px/10，换em做单位
+rem只相对于html的根元素。又可以避免字体大小逐层复合的连锁反应。计算设备的宽度，设置rem的基准很方便移动端的适配
+
+es6
+let和const命令的区别
+let命令声明变量只在let所在的代码块内有效，
+不存在变量提升，必须先声明，后赋值，
+有暂时性死区，只要块级作用域存在let命令，他所声明的变量就绑定了，不在受外部影响，暂时性死区的typeOf 也会报错，如果一个变量没有被声明，反而不会报错
+let不允许在相同作用域内，重复声明一个变量
+const只能在声明时赋值一次，不能再次赋值，声明时必须赋值。
+const声明一个只读的常量
+ES5只是全局作用域和函数作用域，内层变量可能会覆盖外层变量，用来技术的循环变量泄露成全局变量
+ES6允许块级作用域的任意嵌套
+
+数组的扩展
+Array.from()  可转类似数组的对象和可遍历的对象
+Array.from([1, 2, 3], (x) => x * x) 可接受第二个参数，作用类似于数组的map方法，用来对每个元素就行处理
+
+Array.of() ;将一组值，转换为数组
+find() ;findIndex();fill();entires,keys(),values(),includes(),
+
+class
+类的数据类型就是函数；constructor方法是类的默认方法，类必须使用new 调用；类的所有实例共享原型对象
+类不存在变量提升
+ 
+ 私有方法，Symbol值得唯一性，将私有方法的名字命名为一个symbol值
+ 私有属性，在属性名前加#；
+class和extend  es5用的prototype 用apply 和call写属性实现继承
+es6常用的语法
+es6的数组去重
+ new Set() +array.from()数据结构set 类似于数组，但是成员的值都是唯一的，没有重复的值
+ 
+
